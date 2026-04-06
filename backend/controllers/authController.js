@@ -2,7 +2,7 @@ require("dotenv").config();
 
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+const { generateAccessToken, generateRefreshToken } = require("../utils/tokens");
 
 exports.register = async (req, res) => {
     const { name, email, password } = req.body;
@@ -32,5 +32,7 @@ exports.login = async (req, res) => {
     }
     const accessToken = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user);
-    res.json({ accessToken, refreshToken });
+    res.json({ accessToken: accessToken, refreshToken: refreshToken});
+    user.refreshToken = refreshToken;
+    await user.save();
 }

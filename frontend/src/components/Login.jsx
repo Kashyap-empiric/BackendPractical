@@ -19,7 +19,8 @@ export default function Login() {
     e.preventDefault();
     try {
       const response = await API.post("/login", form);
-      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("accessToken", response.data.accessToken);
+      localStorage.setItem("refreshToken", response.data.refreshToken);
       navigate("/dashboard");
     }
     catch (err) {
