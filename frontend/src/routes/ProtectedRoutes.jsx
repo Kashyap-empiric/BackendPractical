@@ -21,7 +21,9 @@ function ProtectedRoutes() {
     if (isAuth === false) {
         return <Navigate to="/login" replace />;
     }
-    return <Outlet />;
+    if (isAuth === true) {
+        return <Outlet />;
+    }
 }
 
 export default ProtectedRoutes;
