@@ -1,7 +1,8 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import Dashboard from "../pages/Dashboard";
-import Login from "../pages/Login";
-import Register from "../pages/Register";
+import Dashboard from "../components/Dashboard";
+import Login from "../components/Login";
+import ProtectedRoutes from "./ProtectedRoutes";
+import Register from "../components/Register";
 
 export default function AppRoutes() {
   return (
@@ -9,7 +10,9 @@ export default function AppRoutes() {
       <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/dashboard" element={<Dashboard />} />
+      <Route element={<ProtectedRoutes />}>
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Route>
     </Routes>
   )
 }
