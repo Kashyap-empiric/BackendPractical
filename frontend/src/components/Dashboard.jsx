@@ -1,8 +1,17 @@
-export default function Dashboard() {
+import API from "../services/api";
+import { useNavigate } from "react-router-dom";
 
-  const logout = () => {
-    localStorage.removeItem("token");
-    window.location.href = "/login";
+export default function Dashboard() {
+  const navigate = useNavigate();
+  const logout = async () => {
+    try {
+      const response = await API.post("/logout");
+      navigate("/login");
+      console.log(response.data.message);
+    } catch (err) {
+      console.error(err);
+      console.log("Logout failed. Please try again.");
+    }
   };
 
   return (
