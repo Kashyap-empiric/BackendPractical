@@ -7,19 +7,15 @@ export default function Dashboard() {
 
   return (
     <div className="dashboard">
-
       <div className="navbar">
         <h2>Dashboard</h2>
         <button onClick={logout}>Logout</button>
       </div>
-
       <div className="dashboard-content">
         <div className="card">
-          <h3>Welcome</h3>
           <p>You are logged in successfully.</p>
         </div>
       </div>
-
     </div>
   );
 }
