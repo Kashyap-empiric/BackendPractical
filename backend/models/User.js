@@ -14,10 +14,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    refreshToken: {
-        type: String,
-        createdAt: Date
-    }
 }, {timestamps: true});
 
 module.exports = mongoose.model("User", userSchema);

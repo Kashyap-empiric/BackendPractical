@@ -16,17 +16,20 @@ export default function About() {
   const dashboard = () => {
     navigate("/dashboard");
   }
-
+  const sessions = async () => {
+    navigate("/sessions");
+  };
   return (
     <div className="about">
       <div className="navbar">
         <h2>About</h2>
         <div>
+          <button onClick={sessions}>Sessions</button>
           <button onClick={dashboard}>Dashboard</button>
           <button onClick={logout}>Logout</button>
         </div>
       </div>
-      <div className="dashboard-content">
+      <div className="content">
         <div className="card">
           <p>This is the About page</p>
         </div>

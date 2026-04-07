@@ -7,13 +7,19 @@ const authMiddleware = (req, res, next) => {
     }
     try {
         const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-        req.user = decoded;
+        req.userId = decoded.id;
+        req.sessionId = decoded.sid || null;
         next();
     } catch (err) {
         if(err.name === "TokenExpiredError") {
             return res.status(401).json({ message: "Access token expired" });
         }
-        res.status(401).json({ message: "Invalid access token" });
+        if (err.name === "JsonWebTokenError") {
+            return res.status(401).json({ message: "Invalid access token" });
+        }
+        return res.status(500).json({
+            message: "Authentication error"
+        });
     }
 }
 

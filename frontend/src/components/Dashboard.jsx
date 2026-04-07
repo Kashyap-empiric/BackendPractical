@@ -29,6 +29,10 @@ export default function Dashboard() {
       console.log("Logout failed. Please try again.");
     }
   };
+  const sessions = async () => {
+    navigate("/sessions");
+  };
+
   const about = () => {
     navigate("/about");
   }
@@ -38,11 +42,12 @@ export default function Dashboard() {
       <div className="navbar">
         <h2>Dashboard</h2>
         <div>
+          <button onClick={sessions}>Sessions</button>
           <button onClick={about}>About</button>
           <button onClick={logout}>Logout</button>
         </div>
       </div>
-      <div className="dashboard-content">
+      <div className="content">
         <div className="card">
           <p>You are logged in successfully.</p>
           <p>{data?.message}</p>

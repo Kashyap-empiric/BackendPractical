@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { register, login, refreshToken, logout } = require("../controllers/authController")
+const { register, login, refreshToken, logout, logoutAll, getSessions } = require("../controllers/authController")
 const authMiddleware = require("../middleware/authMiddleware")
 const User = require("../models/User");
 
@@ -8,6 +8,9 @@ router.post("/register", register);
 router.post("/login", login);
 router.post("/refresh", refreshToken);
 router.post("/logout", logout);
+
+router.get("/sessions", authMiddleware, getSessions);
+router.get("/logout-all", authMiddleware, logoutAll);
 
 router.get("/authcheck", authMiddleware, (req, res) => {
     res.json({ message: "You are authenticated", user: req.user });
