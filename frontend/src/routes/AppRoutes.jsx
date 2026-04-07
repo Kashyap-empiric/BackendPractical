@@ -3,6 +3,7 @@ import Dashboard from "../components/Dashboard";
 import Login from "../components/Login";
 import ProtectedRoutes from "./ProtectedRoutes";
 import Register from "../components/Register";
+import About from "../components/About";
 
 export default function AppRoutes() {
   return (
@@ -12,6 +13,7 @@ export default function AppRoutes() {
       <Route path="/register" element={<Register />} />
       <Route element={<ProtectedRoutes />}>
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/about" element={<About />} />
       </Route>
     </Routes>
   )

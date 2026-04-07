@@ -38,7 +38,7 @@ exports.login = async (req, res) => {
 
     const accessToken = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user);
-    
+
     res.cookie("accessToken", accessToken, {
         httpOnly: true,
         secure: true,
@@ -57,7 +57,46 @@ exports.login = async (req, res) => {
     await user.save();
 }
 
+exports.refreshToken = async (req, res) => {
+    try {
+        const refreshToken = req.cookies.refreshToken;
+        if (!refreshToken) {
+            return res.status(401).json({ message: "No refresh token" });
+        }
+        const user = await User.findOne({ refreshToken });
+        if (!user) {
+            return res.status(401).json({ message: "Invalid refresh token" });
+        }
+        jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err) => {
+            if (err) {
+                return res.status(403).json({ message: "Invalid refresh token" });
+            }
+            const newAcessToken = generateAccessToken(user);
+            res.cookie("accessToken", newAccessToken, {
+                httpOnly: true,
+                secure: true,
+                sameSite: "Strict",
+                maxAge: 20 * 1000
+            });
+            res.json({ accessToken: newAcessToken, message: "Access Token refreshed" });
+        })
+    } catch (err) {
+        res.status(500).json({ message: "Server error" });
+    }
+}
+
 exports.logout = async (req, res) => {
-    res.clearCookie("refreshToken");
-    res.json({ message: "Logged out successfully" });
+    try {
+        const refreshToken = req.cookies.refreshToken;
+        const user = await User.findOne({ refreshToken });
+        if (user) {
+            user.refreshToken = null;
+            await user.save();
+        }
+        res.clearCookie("accessToken");
+        res.clearCookie("refreshToken");
+        res.json({ message: "Logged out successfully" });
+    } catch (err) {
+        res.status(500).json({ message: "Server error" });
+    }
 }

@@ -24,6 +24,8 @@ function ProtectedRoutes() {
     if (isAuth === true) {
         return <Outlet />;
     }
+
+    return <div>Loading...</div>;
 }
 
 export default ProtectedRoutes;

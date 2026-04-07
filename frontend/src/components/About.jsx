@@ -1,7 +1,7 @@
 import API from "../services/api";
 import { useNavigate } from "react-router-dom";
 
-export default function Dashboard() {
+export default function About() {
   const navigate = useNavigate();
   const logout = async () => {
     try {
@@ -13,20 +13,20 @@ export default function Dashboard() {
       console.log("Logout failed. Please try again.");
     }
   };
-  const about = () => {
-    navigate("/about");
+  const dashboard = () => {
+    navigate("/dashboard");
   }
 
   return (
-    <div className="dashboard">
+    <div className="about">
       <div className="navbar">
-        <h2>Dashboard</h2>
-        <button onClick={about}>About</button>
+        <h2>About</h2>
+        <button onClick={dashboard}>Dashboard</button>
         <button onClick={logout}>Logout</button>
       </div>
       <div className="dashboard-content">
         <div className="card">
-          <p>You are logged in successfully.</p>
+          <p>This is the About page</p>
         </div>
       </div>
     </div>
