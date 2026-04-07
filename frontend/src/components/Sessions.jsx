@@ -23,6 +23,12 @@ export default function Sessions() {
         }
     };
 
+    const map = new Map();
+    for (const session of sessions) {
+        map.set(session._id, session);
+    }
+    const uniqueSessions = Array.from(map.values());
+
     const logout = async () => {
         try {
             const response = await API.post("/logout");
@@ -38,6 +44,15 @@ export default function Sessions() {
     }
     const dashboard = () => {
         navigate("/dashboard");
+    }
+
+    const logoutSession = async (sessionId) => {
+        try {
+            await API.delete(`/sessions/${sessionId}`);
+            setSessions(prev => prev.filter(s => s._id !== sessionId))
+        } catch (err) {
+            console.error("Failed to logout session", err);
+        }
     }
 
     if (loading) {
@@ -65,12 +80,11 @@ export default function Sessions() {
                     <button className="logout-all-btn">Logout All</button>
                 </div>
                 <div className="sessions-grid">
-                    {sessions.map((session) => (
+                    {uniqueSessions.map((session) => (
                         <div key={session._id} className="session-card">
                             <div className="session-info">
                                 <h3>
                                     {session.deviceInfo?.deviceType || "Unknown Device"}
-                                    {session.current && <span className="current-badge">Current</span>}
                                 </h3>
                                 <p><strong>Browser:</strong> {session.deviceInfo?.userAgent || "Unknown"}</p>
                                 <p><strong>IP:</strong> {session.deviceInfo?.ipAddress || "Unknown"}</p>
@@ -83,8 +97,9 @@ export default function Sessions() {
                                     {new Date(session.createdAt).toLocaleString()}
                                 </p>
                             </div>
+                            {}
                             <div className="session-actions">
-                                <button>Logout</button>
+                                {!session.current && (<button onClick={() => logoutSession(session._id)}>Logout</button>)}
                             </div>
 
                         </div>

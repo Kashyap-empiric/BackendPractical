@@ -20,47 +20,47 @@ const mongoose = require("mongoose");
 
 exports.login = async (req, res) => {
 
-  const { email, password } = req.body;
+    const { email, password } = req.body;
 
-  const user = await User.findOne({ email });
-  if (!user) {
-    return res.status(401).json({ message: "Invalid email" });
-  }
+    const user = await User.findOne({ email });
+    if (!user) {
+        return res.status(401).json({ message: "Invalid email" });
+    }
 
-  const valid = await bcrypt.compare(password, user.password);
-  if (!valid) {
-    return res.status(401).json({ message: "Invalid password" });
-  }
+    const valid = await bcrypt.compare(password, user.password);
+    if (!valid) {
+        return res.status(401).json({ message: "Invalid password" });
+    }
 
-  const sessionId = new mongoose.Types.ObjectId();
+    const sessionId = new mongoose.Types.ObjectId();
 
-  const accessToken = generateAccessToken(user);
-  const refreshToken = generateRefreshToken(user, sessionId);
+    const accessToken = generateAccessToken(user);
+    const refreshToken = generateRefreshToken(user, sessionId);
 
-  const refreshHash = await bcrypt.hash(refreshToken, 10);
-  const accessHash = await bcrypt.hash(accessToken, 10);
+    const refreshHash = await bcrypt.hash(refreshToken, 10);
+    const accessHash = await bcrypt.hash(accessToken, 10);
 
-  await Session.create({
-    _id: sessionId,
-    user: user._id,
-    accessToken: accessHash,
-    refreshToken: refreshHash,
-    deviceInfo: {
-      deviceType: req.headers["sec-ch-ua-platform"],
-      userAgent: req.headers["user-agent"],
-      ipAddress: req.ip,
-      lastUsed: new Date()
-    },
-    expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-  });
+    await Session.create({
+        _id: sessionId,
+        user: user._id,
+        accessToken: accessHash,
+        refreshToken: refreshHash,
+        deviceInfo: {
+            deviceType: req.headers["sec-ch-ua-platform"],
+            userAgent: req.headers["user-agent"],
+            ipAddress: req.ip,
+            lastUsed: new Date()
+        },
+        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+    });
 
-  res.cookie("accessToken", accessToken, accessTokenOptions);
-  res.cookie("refreshToken", refreshToken, refreshCookieOptions);
+    res.cookie("accessToken", accessToken, accessTokenOptions);
+    res.cookie("refreshToken", refreshToken, refreshCookieOptions);
 
-  res.json({
-    message: "Login successful",
-    user
-  });
+    res.json({
+        message: "Login successful",
+        user
+    });
 };
 
 exports.refreshToken = async (req, res) => {
@@ -96,11 +96,17 @@ exports.refreshToken = async (req, res) => {
     res.json({ message: "Access Token refreshed" });
 }
 
+exports.logoutSession = async (req, res) => {
+    const { sessionId } = req.params;
+    await Session.deleteOne({ _id: sessionId, user: req.userId });
+    res.json({ message: "Session logged out" });
+}
+
 exports.logout = async (req, res) => {
     const token = req.cookies.refreshToken;
     if (token) {
         const decoded = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
-        await Session.deleteOne({ _id: decoded.sid });
+        await Session.deleteOne({ _id: decoded.sid, user: req.userId });
     }
     res.clearCookie("accessToken")
     res.clearCookie("refreshToken")

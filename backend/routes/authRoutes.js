@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { register, login, refreshToken, logout, logoutAll, getSessions } = require("../controllers/authController")
+const { register, login, refreshToken, logoutAll, getSessions, logout, logoutSession } = require("../controllers/authController")
 const authMiddleware = require("../middleware/authMiddleware")
 const User = require("../models/User");
 
@@ -23,5 +23,6 @@ router.get("/dashboard", authMiddleware, (req, res) => {
   });
 });
 
+router.delete("/sessions/:sessionId", authMiddleware, logoutSession);
 
 module.exports = router;
