@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const jwt = require("jsonwebtoken");
 const { register, login } = require("../controllers/authController")
 const authMiddleware = require("../middleware/authMiddleware")
 const User = require("../models/User");
@@ -30,12 +31,13 @@ router.post("/refresh", async (req, res) => {
         return res.status(403).json({ message: "Invalid refresh token" });
       }
       const newAccessToken = generateAccessToken(user._id);
-      res.cookie("accessToken", newAccessToken, {
+      const cookieOptions = {
         httpOnly: true,
-        secure: true,
-        sameSite: "Strict",
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "Strict" : "None",
         maxAge: 20 * 1000
-      });
+      };
+      res.cookie("accessToken", newAccessToken, cookieOptions);
       res.json({ accessToken: newAccessToken, message: "Access token refreshed" });
     });
   } catch (err) {
@@ -46,7 +48,7 @@ router.post("/refresh", async (req, res) => {
 
 router.post("/logout", async (req, res) => {
   try {
-    const { refreshToken } = req.cookies.refreshToken;
+    const refreshToken = req.cookies.refreshToken;
     const user = await User.findOne({ refreshToken });
     if (user) {
       user.refreshToken = null;
