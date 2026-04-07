@@ -2,30 +2,30 @@ import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import API from "../services/api";
 
-function ProtectedRoutes() {
-    const [isAuth, setIsAuth] = useState(null);
+export default function ProtectedRoutes() {
 
-    useEffect(() => {
-        const checkAuth = async () => {
-            try {
-                await API.get("/dashboard");
-                setIsAuth(true);
-            } catch (err) {
-                setIsAuth(false);
-                console.error(err);
-            }
-        };
-        checkAuth();
-    }, []);
+  const [authState, setAuthState] = useState("loading");
 
-    if (isAuth === false) {
-        return <Navigate to="/login" replace />;
-    }
-    if (isAuth === true) {
-        return <Outlet />;
-    }
+  useEffect(() => {
+    const verifySession = async () => {
+      try {
+        await API.get("/authcheck");
+        setAuthState("authenticated");
+      } catch (err) {
+        console.error("Session verification failed:", err);
+        setAuthState("unauthenticated");
+      }
+    };
+    verifySession();
+  }, []);
 
+  if (authState === "loading") {
     return <div>Loading...</div>;
-}
+  }
 
-export default ProtectedRoutes;
+  if (authState === "unauthenticated") {
+    return <Navigate to="/login" replace />;
+  }
+
+  return <Outlet />;
+}

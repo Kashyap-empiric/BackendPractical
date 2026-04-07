@@ -6,9 +6,13 @@ const API = axios.create({
 });
 
 API.interceptors.response.use((response) => response, async (error) => {
+
     const originalRequest = error.config;
-    if(error.response.status === 401 && !originalRequest._retry) { 
+
+    if(error.response?.status === 401 && !originalRequest._retry && !originalRequest.url.includes("/refresh")) { 
+
         originalRequest._retry = true;
+
         try {
             await API.post("/refresh", {}, { withCredentials: true });
             console.log("Token refreshed successfully");
