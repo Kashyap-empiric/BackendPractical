@@ -54,13 +54,13 @@ exports.refreshToken = async (req, res) => {
 exports.logout = async (req, res) => {
     try {
         const token = req.cookies.refreshToken;
-        const user = await User.findOne({ refreshtoken: token });
+        const user = await User.findOne({ refreshToken: token });
         if (user) {
             user.refreshToken = null;
             await user.save();
         }
-        res.clearCookies("accessToken");
-        res.clearCookies("refreshToken");
+        res.clearCookie("accessToken");
+        res.clearCookie("refreshToken");
         res.json({ message: "Logged out successfully" });
     } catch (err) {
         res.status(500).json({ message: "Server error" });

@@ -1,8 +1,11 @@
 body{
   margin:0;
-  font-family: Arial, Helvetica, sans-serif;
-  background:#f2f4f7;
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  background:linear-gradient(135deg,#f5f7fa,#e4e8f0);
+  color:#333;
 }
+
+/* AUTH PAGES */
 
 .auth-container{
   height:100vh;
@@ -12,16 +15,22 @@ body{
 }
 
 .auth-card{
-  width:350px;
+  width:380px;
   background:white;
-  padding:30px;
-  border-radius:8px;
-  box-shadow:0 4px 15px rgba(0,0,0,0.1);
+  padding:35px;
+  border-radius:12px;
+  box-shadow:0 15px 35px rgba(0,0,0,0.1);
+  transition:transform .2s ease;
+}
+
+.auth-card:hover{
+  transform:translateY(-3px);
 }
 
 .auth-card h1{
   text-align:center;
-  margin-bottom:20px;
+  margin-bottom:25px;
+  color:#4f46e5;
 }
 
 .auth-card form{
@@ -30,25 +39,35 @@ body{
 }
 
 .auth-card label{
-  margin-top:10px;
+  margin-top:12px;
   font-size:14px;
+  font-weight:600;
 }
 
 .auth-card input{
-  padding:10px;
-  margin-top:5px;
-  border:1px solid #ccc;
-  border-radius:4px;
+  padding:11px;
+  margin-top:6px;
+  border:1px solid #ddd;
+  border-radius:6px;
+  font-size:14px;
+  transition:border .2s;
+}
+
+.auth-card input:focus{
+  outline:none;
+  border-color:#4f46e5;
 }
 
 .auth-card button{
-  margin-top:20px;
-  padding:10px;
+  margin-top:22px;
+  padding:12px;
   border:none;
   background:#4f46e5;
   color:white;
-  border-radius:5px;
+  font-size:15px;
+  border-radius:6px;
   cursor:pointer;
+  transition:background .2s;
 }
 
 .auth-card button:hover{
@@ -56,35 +75,118 @@ body{
 }
 
 .auth-card p{
-  margin-top:15px;
+  margin-top:18px;
   text-align:center;
   font-size:14px;
 }
 
+.auth-card a{
+  color:#4f46e5;
+  text-decoration:none;
+  font-weight:600;
+}
+
+.auth-card a:hover{
+  text-decoration:underline;
+}
+
+
+/* NAVBAR */
+
 .navbar{
   background:white;
-  padding:15px 30px;
+  padding:18px 40px;
   display:flex;
+  align-items:center;
   justify-content:space-between;
-  box-shadow:0 2px 5px rgba(0,0,0,0.1);
+  box-shadow:0 3px 10px rgba(0,0,0,0.08);
+}
+
+.navbar h2{
+  margin:0;
+  color:#4f46e5;
+}
+
+.navbar div{
+  display:flex;
+  gap:12px;
 }
 
 .navbar button{
-  background:#ef4444;
-  color:white;
+  padding:8px 16px;
   border:none;
-  padding:8px 15px;
-  border-radius:5px;
+  border-radius:6px;
   cursor:pointer;
+  font-size:14px;
+  transition:all .2s;
 }
 
+.navbar button:first-child{
+  background:#6366f1;
+  color:white;
+}
+
+.navbar button:first-child:hover{
+  background:#4f46e5;
+}
+
+.navbar button:last-child{
+  background:#ef4444;
+  color:white;
+}
+
+.navbar button:last-child:hover{
+  background:#dc2626;
+}
+
+
+/* DASHBOARD */
+
 .dashboard-content{
-  padding:40px;
+  padding:50px;
+  max-width:900px;
+  margin:auto;
 }
 
 .card{
   background:white;
-  padding:20px;
-  border-radius:8px;
-  border: 1px solid black;
+  padding:35px;
+  border-radius:12px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+  text-align:center;
+}
+
+.card h3{
+  margin-top:0;
+}
+
+.card p{
+  font-size:16px;
+  color:#555;
+}
+
+
+/* ABOUT PAGE */
+
+.about-container{
+  max-width:900px;
+  margin:auto;
+  padding:50px;
+}
+
+.about-card{
+  background:white;
+  padding:35px;
+  border-radius:12px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+.about-card h1{
+  margin-top:0;
+  color:#4f46e5;
+}
+
+.about-card p{
+  line-height:1.6;
+  margin-top:15px;
 }

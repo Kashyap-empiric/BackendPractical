@@ -37,8 +37,10 @@ export default function Dashboard() {
     <div className="dashboard">
       <div className="navbar">
         <h2>Dashboard</h2>
-        <button onClick={about}>About</button>
-        <button onClick={logout}>Logout</button>
+        <div>
+          <button onClick={about}>About</button>
+          <button onClick={logout}>Logout</button>
+        </div>
       </div>
       <div className="dashboard-content">
         <div className="card">

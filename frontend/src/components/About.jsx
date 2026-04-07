@@ -21,8 +21,10 @@ export default function About() {
     <div className="about">
       <div className="navbar">
         <h2>About</h2>
-        <button onClick={dashboard}>Dashboard</button>
-        <button onClick={logout}>Logout</button>
+        <div>
+          <button onClick={dashboard}>Dashboard</button>
+          <button onClick={logout}>Logout</button>
+        </div>
       </div>
       <div className="dashboard-content">
         <div className="card">
