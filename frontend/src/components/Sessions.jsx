@@ -56,7 +56,7 @@ export default function Sessions() {
   };
 
   const logoutAll = async () => {
-    await API.get("/logout-all");
+    await API.post("/logout-all");
     navigate("/login");
   };
 
@@ -98,7 +98,6 @@ export default function Sessions() {
               ? new Date(session.deviceInfo?.lastUsed).toLocaleString()
               : "N/a";
             const created = new Date(session.createdAt).toLocaleString();
-            console.log(os, browser, ip, lastUsed, created);
             return (
               <div key={session._id} className="session-card">
                 <div className="session-info">

@@ -1,14 +1,14 @@
 const accessCookieOptions = {
     httpOnly: true,
     secure: true,
-    sameSite: "Strict",
+    sameSite: "none",
     maxAge: 20 * 1000,
 };
 
 const refreshCookieOptions = {
     httpOnly: true,
     secure: true,
-    sameSite: "Strict",
+    sameSite: "none",
     maxAge: 7 * 24 * 60 * 60 * 1000,
 };
 

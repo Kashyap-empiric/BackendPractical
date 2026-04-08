@@ -32,7 +32,7 @@ exports.login = async (req, res) => {
 
     const sessionId = new mongoose.Types.ObjectId();
 
-    const accessToken = generateAccessToken(user);
+    const accessToken = generateAccessToken(user, sessionId);
     const refreshToken = generateRefreshToken(user, sessionId);
 
     const refreshHash = await bcrypt.hash(refreshToken, 10);
@@ -91,7 +91,7 @@ exports.refreshToken = async (req, res) => {
     if (!user) {
         return res.status(401).json({ message: "User not found" });
     }
-    const newAccessToken = generateAccessToken(user);
+    const newAccessToken = generateAccessToken(user, session._id);
 
     session.deviceInfo.lastUsed = new Date();
     await session.save();

@@ -7,17 +7,22 @@ export default function ProtectedRoutes() {
   const [authState, setAuthState] = useState("loading");
 
   useEffect(() => {
-    const verifySession = async () => {
-      try {
-        await API.get("/authcheck");
-        setAuthState("authenticated");
-      } catch (err) {
-        console.error("Session verification failed:", err);
-        setAuthState("unauthenticated");
-      }
-    };
-    verifySession();
-  }, []);
+  let mounted = true;
+
+  const verifySession = async () => {
+    try {
+      await API.get("/authcheck");
+      if (mounted) setAuthState("authenticated");
+    } catch {
+      if (mounted) setAuthState("unauthenticated");
+    }
+  };
+
+  verifySession();
+
+  return () => { mounted = false };
+}, []);
+
 
   if (authState === "loading") {
     return <div>Loading...</div>;

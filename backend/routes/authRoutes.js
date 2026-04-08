@@ -10,16 +10,16 @@ router.post("/refresh", refreshToken);
 
 router.post("/logout", authMiddleware, logout);
 router.get("/sessions", authMiddleware, getSessions);
-router.get("/logout-all", authMiddleware, logoutAll);
+router.post("/logout-all", authMiddleware, logoutAll);
 
 router.get("/authcheck", authMiddleware, (req, res) => {
-    res.json({ message: "You are authenticated", user: req.user });
+    res.json({ message: "You are authenticated", user: req.userId });
 });
 
 router.get("/dashboard", authMiddleware, (req, res) => {
   res.json({
     message: "Welcome to dashboard",
-    user: req.user
+    user: req.userId
   });
 });
 
