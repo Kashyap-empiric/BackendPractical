@@ -1,9 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
   margin: 0;
-  font-family: Roboto, sans-serif;
-  color: #333;
-  background-image: url(../public/images/login_back.jpg);
-  background-size: cover;
+  font-family: "Merriweather", sans-serif;
+  color: black;
 }
 
 .auth-container {
@@ -11,19 +15,17 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  background-image: url(../public/images/login_back.webp);
+  background-size: cover;
 }
 
 .auth-card {
-  width: 380px;
+  width: 500px;
+  box-sizing: border-box;
   background: white;
   padding: 35px;
   border-radius: 12px;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-  transition: transform .2s ease;
-}
-
-.auth-card:hover {
-  transform: translateY(-3px);
 }
 
 .auth-card h1 {
@@ -99,7 +101,7 @@ body {
 
 .navbar h2 {
   margin: 0;
-  color: #4f46e5;
+  color: black;
 }
 
 .navbar div {
@@ -108,36 +110,21 @@ body {
 }
 
 .navbar button {
+  background-color: black;
+  color: white;
   padding: 8px 16px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
-  transition: all .2s;
-}
-
-.navbar button:first-child {
-  background: #6366f1;
-  color: white;
-}
-
-.navbar button:first-child:hover {
-  background: #4f46e5;
-}
-
-.navbar button:last-child {
-  background: #ef4444;
-  color: white;
-}
-
-.navbar button:last-child:hover {
-  background: #dc2626;
+  font-family: inherit;
 }
 
 .card {
   background: white;
   padding: 35px;
   border-radius: 12px;
+  border: 1px solid gray;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
   text-align: center;
 }
@@ -148,7 +135,6 @@ body {
 
 .card p {
   font-size: 16px;
-  color: #555;
 }
 
 .about-container {
@@ -183,21 +169,17 @@ body {
 
 .sessions-header h2 {
   margin: 0;
-  color: #4f46e5;
 }
 
 .logout-all-btn {
-  background: #ef4444;
+  background: black;
   color: white;
   border: none;
+  font-family: inherit;
   padding: 10px 18px;
   border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
-}
-
-.logout-all-btn:hover {
-  background: #dc2626;
 }
 
 .content {
@@ -258,16 +240,12 @@ body {
 }
 
 .session-actions button {
-  background: #ef4444;
+  background: black;
   color: white;
   border: none;
+  font-family: inherit;
   padding: 8px 14px;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 13px;
-  transition: background .2s;
-}
-
-.session-actions button:hover {
-  background: #dc2626;
+  font-size: 14px;
 }
