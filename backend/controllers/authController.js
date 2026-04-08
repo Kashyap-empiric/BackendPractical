@@ -2,10 +2,11 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
+const UAParser = require("ua-parser-js");
 const Session = require("../models/Session");
 const authService = require("../services/authService");
 const { generateAccessToken, generateRefreshToken } = require("../utils/tokens");
-const { accessTokenOptions, refreshCookieOptions } = require("../utils/cookieOptions");
+const { accessTokenOptions, refreshCookieOptions, deviceTokenOptions } = require("../utils/cookieOptions");
 
 exports.register = async (req, res) => {
     try {
@@ -36,13 +37,23 @@ exports.login = async (req, res) => {
 
     const refreshHash = await bcrypt.hash(refreshToken, 10);
 
+    let deviceToken = req.cookies.device_token;
+
+    const parser = new UAParser(req.headers["user-agent"]);
+    const userAgentParsed = parser.getResult();
+
+    if(!deviceToken) {
+        deviceToken = crypto.randomUUID();
+        res.cookie("device_token", deviceToken, deviceTokenOptions)
+    }
+
     await Session.create({
         _id: sessionId,
         user: user._id,
         refreshToken: refreshHash,
         deviceInfo: {
-            deviceType: req.headers["sec-ch-ua-platform"],
-            userAgent: req.headers["user-agent"],
+            deviceId: deviceToken,
+            userAgent: userAgentParsed,
             ipAddress: req.ip,
             lastUsed: new Date()
         },

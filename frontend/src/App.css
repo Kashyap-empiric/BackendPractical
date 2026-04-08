@@ -222,6 +222,7 @@ body {
   justify-content: space-between;
   align-items: flex-start;
   gap: 30px;
+  box-sizing: border-box;
 }
 
 .session-info {

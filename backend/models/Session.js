@@ -15,10 +15,7 @@ const sessionSchema = new mongoose.Schema({
             type: String,
         },
         userAgent: {
-            type: String,
-        },
-        deviceType: {
-            type: String,
+            type: mongoose.Schema.Types.Mixed,
         },
         lastUsed: {
             type: Date,
