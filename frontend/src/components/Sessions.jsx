@@ -55,6 +55,11 @@ export default function Sessions() {
         }
     }
 
+    const logoutAll = async () => {
+        await API.post("/logout-all");
+        navigate("/login")
+    }
+
     if (loading) {
         return (
             <div className="dashboard-content">
@@ -77,7 +82,7 @@ export default function Sessions() {
             <div className="content">
                 <div className="sessions-header">
                     <h2>Active Sessions</h2>
-                    <button className="logout-all-btn">Logout All</button>
+                    <button className="logout-all-btn" onClick={logoutAll}>Logout All</button>
                 </div>
                 <div className="sessions-grid">
                     {uniqueSessions.map((session) => (

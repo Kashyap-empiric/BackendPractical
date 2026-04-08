@@ -19,14 +19,11 @@ exports.register = async (req, res) => {
 const mongoose = require("mongoose");
 
 exports.login = async (req, res) => {
-
     const { email, password } = req.body;
-
     const user = await User.findOne({ email });
     if (!user) {
         return res.status(401).json({ message: "Invalid email" });
     }
-
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) {
         return res.status(401).json({ message: "Invalid password" });
@@ -38,12 +35,10 @@ exports.login = async (req, res) => {
     const refreshToken = generateRefreshToken(user, sessionId);
 
     const refreshHash = await bcrypt.hash(refreshToken, 10);
-    const accessHash = await bcrypt.hash(accessToken, 10);
 
     await Session.create({
         _id: sessionId,
         user: user._id,
-        accessToken: accessHash,
         refreshToken: refreshHash,
         deviceInfo: {
             deviceType: req.headers["sec-ch-ua-platform"],
@@ -86,8 +81,6 @@ exports.refreshToken = async (req, res) => {
         return res.status(401).json({ message: "User not found" });
     }
     const newAccessToken = generateAccessToken(user);
-    const accessHash = await bcrypt.hash(newAccessToken, 10);
-    session.accessToken = accessHash;
 
     session.deviceInfo.lastUsed = new Date();
     await session.save();
@@ -105,8 +98,10 @@ exports.logoutSession = async (req, res) => {
 exports.logout = async (req, res) => {
     const token = req.cookies.refreshToken;
     if (token) {
-        const decoded = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
-        await Session.deleteOne({ _id: decoded.sid, user: req.userId });
+        try {
+            const decoded = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
+            await Session.deleteOne({ _id: decoded.sid, user: req.userId });
+        } catch { }
     }
     res.clearCookie("accessToken")
     res.clearCookie("refreshToken")
@@ -121,6 +116,19 @@ exports.logoutAll = async (req, res) => {
 }
 
 exports.getSessions = async (req, res) => {
-    const sessions = await Session.find({ user: req.userId });
-    res.json({ sessions })
+    const sessions = await Session.find({ user: req.userId }).lean();
+
+    const refreshToken = req.cookies.refreshToken;
+
+    let currentSid = null;
+    if (refreshToken) {
+        try {
+            const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+            currentSid = decoded.sid;
+        } catch { }
+    }
+
+    const result = sessions.map(s => ({ ...s, current: s._id.toString() === currentSid }));
+
+    res.json({ sessions: result })
 }
