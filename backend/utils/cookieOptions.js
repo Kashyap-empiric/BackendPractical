@@ -13,9 +13,9 @@ const refreshCookieOptions = {
 };
 
 const deviceTokenOptions = {
-    httpOnly: true,
+    httpOnly: false,
     secure: true,
-    sameSite: "Strict",
+    sameSite: "none",
     maxAge: 7 * 24 * 60 * 60 * 1000,
 }
 
