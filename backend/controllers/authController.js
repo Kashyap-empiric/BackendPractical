@@ -1,7 +1,8 @@
 require("dotenv").config();
-const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
+const jwt = require("jsonwebtoken");
 const UAParser = require("ua-parser-js");
 const Session = require("../models/Session");
 const authService = require("../services/authService");
