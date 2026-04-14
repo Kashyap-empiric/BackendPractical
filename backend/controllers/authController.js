@@ -64,10 +64,12 @@ exports.login = async (req, res) => {
     res.cookie("accessToken", accessToken, accessTokenOptions);
     res.cookie("refreshToken", refreshToken, refreshCookieOptions);
 
-    const { password: _, _id, _v, ...safeUser } = user.toObject();
     res.json({
         message: "Login successful",
-        safeUser
+        user: {
+            name: user.name,
+            email: user.email
+        }
     });
 };
 
