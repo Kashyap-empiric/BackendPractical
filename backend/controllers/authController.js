@@ -100,7 +100,7 @@ exports.refreshToken = async (req, res) => {
     session.deviceInfo.lastUsed = new Date();
     await session.save();
 
-    res.cookie("accessToken", newAccessToken, accessTokenOptions);
+    res.cookie("accessToken", newAccessToken, accessCookieOptions);
     res.json({ message: "Access Token refreshed" });
 }
 
