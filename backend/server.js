@@ -17,7 +17,7 @@ app.use(cookieParser());
 
 app.use("/api/", authRoutes)
 
-const port = process.env.PORT;
+const port = process.env.PORT || 8080;
 
 app.listen(port, () => {
     console.log(`Server running on port http://localhost:${port}`);
