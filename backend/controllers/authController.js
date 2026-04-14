@@ -7,7 +7,7 @@ const UAParser = require("ua-parser-js");
 const Session = require("../models/Session");
 const authService = require("../services/authService");
 const { generateAccessToken, generateRefreshToken } = require("../utils/tokens");
-const { accessTokenOptions, refreshCookieOptions, deviceTokenOptions } = require("../utils/cookieOptions");
+const { accessCookieOptions, refreshCookieOptions, deviceTokenOptions } = require("../utils/cookieOptions");
 
 exports.register = async (req, res) => {
     try {
@@ -61,7 +61,7 @@ exports.login = async (req, res) => {
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
     });
 
-    res.cookie("accessToken", accessToken, accessTokenOptions);
+    res.cookie("accessToken", accessToken, accessCookieOptions);
     res.cookie("refreshToken", refreshToken, refreshCookieOptions);
 
     res.json({
